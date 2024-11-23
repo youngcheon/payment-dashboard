@@ -19,5 +19,12 @@ export const MobileWrapper = styled.div`
   overflow-x: hidden;
   margin: 0 auto;
   position: relative;
+  display: flex;
+  flex-direction: column;
   padding-top: 44px;
+`;
+
+export const Content = styled.div`
+  flex: 1;
+  padding: 30px;
 `;
