@@ -6,6 +6,7 @@ export const Title = styled.h1`
   font-weight: 600;
   font-size: 24px;
   line-height: 36px;
+  margin-bottom: 20px;
 `;
 
 export const TitleContainer = styled.div`
