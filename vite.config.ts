@@ -1,10 +1,10 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import tsconfigPaths from "vite-tsconfig-paths";
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tsconfigPaths from 'vite-tsconfig-paths';
+import svgr from 'vite-plugin-svgr';
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tsconfigPaths()],
+  plugins: [react(), tsconfigPaths(), svgr()],
   server: {
     port: 3000,
     open: true,
@@ -14,6 +14,11 @@ export default defineConfig({
   },
   build: {
     sourcemap: true,
-    outDir: "build",
+    outDir: 'build',
+  },
+  resolve: {
+    alias: {
+      '@': '/src',
+    },
   },
 });
