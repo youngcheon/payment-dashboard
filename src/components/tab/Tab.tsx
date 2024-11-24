@@ -1,34 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, createContext, ReactNode } from 'react';
 import * as S from './styled';
 
-interface TabItem {
-  label: string;
-  value: string;
-  content: React.ReactNode;
+interface TabsContextType {
+  activeTab: string;
+  setActiveTab: (value: string) => void;
 }
+
+const TabsContext = createContext<TabsContextType | undefined>(undefined);
 
 interface TabsProps {
-  tabs: TabItem[];
-  defaultTab?: TabItem['value'];
+  defaultTab?: string;
+  children: ReactNode;
 }
 
-export const Tabs = ({ tabs, defaultTab }: TabsProps) => {
-  const [activeTab, setActiveTab] = useState(defaultTab || tabs[0].value);
+interface TabItemProps {
+  label: string;
+  value: string;
+  children: ReactNode;
+}
+
+export const Tabs = ({ defaultTab, children }: TabsProps) => {
+  const firstTabValue = React.Children.toArray(children)[0] as React.ReactElement;
+  const [activeTab, setActiveTab] = useState(defaultTab || firstTabValue.props.value);
 
   return (
-    <>
+    <TabsContext.Provider value={{ activeTab, setActiveTab }}>
       <S.TabContainer>
-        {tabs.map((tab) => (
-          <S.TabButton
-            key={tab.value}
-            isActive={activeTab === tab.value}
-            onClick={() => setActiveTab(tab.value)}
-          >
-            {tab.label}
-          </S.TabButton>
-        ))}
+        {React.Children.map(children, (child) => {
+          const item = child as React.ReactElement<TabItemProps>;
+          return (
+            <S.TabButton
+              key={item.props.value}
+              isActive={activeTab === item.props.value}
+              onClick={() => setActiveTab(item.props.value)}
+            >
+              {item.props.label}
+            </S.TabButton>
+          );
+        })}
       </S.TabContainer>
-      <S.TabContent>{tabs.find((tab) => tab.value === activeTab)?.content}</S.TabContent>
-    </>
+      <S.TabContent>
+        {React.Children.map(children, (child) => {
+          const item = child as React.ReactElement<TabItemProps>;
+          return activeTab === item.props.value ? item.props.children : null;
+        })}
+      </S.TabContent>
+    </TabsContext.Provider>
   );
+};
+
+// Tabs.Item 컴포넌트 추가
+Tabs.Item = ({ children }: TabItemProps) => {
+  return <>{children}</>;
 };
