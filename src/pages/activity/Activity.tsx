@@ -5,10 +5,28 @@ import mockData from '@/mocks/data.json';
 import Chart from '@/components/chart';
 import { Data } from '@/types';
 import List from '@/components/list';
+import { useTransactionNotification } from '@/hooks';
 
 const Activity = () => {
   const sortedData = (mockData as Data[]).sort(
     (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
+  );
+
+  useTransactionNotification({
+    data: sortedData,
+    enabled: true,
+  });
+
+  const renderTransactionList = (filter: (item: Data) => boolean) => (
+    <List>
+      {sortedData
+        .filter((item) => new Date(item.timestamp) <= new Date() && filter(item))
+        .reverse()
+        .slice(0, 20)
+        .map((item) => (
+          <List.Item key={`${item.name}-${item.timestamp}`} {...item} />
+        ))}
+    </List>
   );
 
   return (
@@ -19,7 +37,7 @@ const Activity = () => {
           <NotificationIcon />
         </button>
       </S.TitleContainer>
-      <Tabs defaultTab="weekly">
+      <Tabs defaultTab="weekly" variant="default">
         <Tabs.Item label="Week" value="weekly">
           <Chart
             data={sortedData}
@@ -43,37 +61,13 @@ const Activity = () => {
         <S.SubTitle>Recent Transactions</S.SubTitle>
         <Tabs defaultTab="all" variant="transparent">
           <Tabs.Item label="All" value="all">
-            <List>
-              {sortedData
-                .filter((item) => new Date(item.timestamp) <= new Date())
-                .reverse()
-                .slice(0, 20)
-                .map((item, index) => (
-                  <List.Item key={index} {...item} />
-                ))}
-            </List>
+            {renderTransactionList(() => true)}
           </Tabs.Item>
           <Tabs.Item label="Expense" value="expense">
-            <List>
-              {sortedData
-                .filter((item) => new Date(item.timestamp) <= new Date())
-                .reverse()
-                .slice(0, 20)
-                .map((item, index) => (
-                  <List.Item key={index} {...item} />
-                ))}
-            </List>
+            {renderTransactionList((item) => item.amount < 0)}
           </Tabs.Item>
           <Tabs.Item label="Income" value="income">
-            <List>
-              {sortedData
-                .filter((item) => new Date(item.timestamp) <= new Date())
-                .reverse()
-                .slice(0, 20)
-                .map((item, index) => (
-                  <List.Item key={index} {...item} />
-                ))}
-            </List>
+            {renderTransactionList((item) => item.amount > 0)}
           </Tabs.Item>
         </Tabs>
       </S.RecentTransactions>
