@@ -7,6 +7,7 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   background-color: ${({ theme }) => theme.colors.background};
+  overflow: hidden;
 `;
 
 export const MobileWrapper = styled.div`
@@ -21,7 +22,7 @@ export const MobileWrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  padding-top: 44px;
+  padding-top: 44px; // 노치
 `;
 
 export const Content = styled.div`

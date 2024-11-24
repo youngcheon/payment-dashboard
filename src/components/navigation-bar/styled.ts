@@ -2,14 +2,16 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const Container = styled.nav`
-  position: absolute;
+  position: sticky;
   bottom: 0;
+  left: 0;
   width: 100%;
-  height: 67px;
+  min-height: 67px;
   background: ${({ theme }) => theme.colors.white};
   box-shadow: 0px -20px 40px 0px #00000005;
   display: flex;
   justify-content: center;
+  z-index: 1000;
 `;
 
 export const MenuList = styled.ul`

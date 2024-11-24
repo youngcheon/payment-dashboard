@@ -2,6 +2,7 @@ import { Data } from '@/types';
 import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { useTheme } from 'styled-components';
 import * as S from './styled';
+import { formatDate } from '@/utils';
 
 interface ChartProps {
   data: Data[];
@@ -33,16 +34,6 @@ const compressData = (data: Data[], maxPoints: number = 50) => {
   return compressed;
 };
 
-const formatDateTime = (timestamp: string) => {
-  const date = new Date(timestamp);
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-
-  return `${month}.${day} ${hours}:${minutes}`;
-};
-
 const Chart = ({ data, period }: ChartProps) => {
   const theme = useTheme();
 
@@ -53,11 +44,10 @@ const Chart = ({ data, period }: ChartProps) => {
         const itemDate = new Date(item.timestamp);
         return itemDate >= period.startDate && itemDate <= period.endDate;
       })
-      .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
       .map((item) => ({
         ...item,
         date: new Date(item.timestamp).toLocaleDateString(),
-        fullDateTime: formatDateTime(item.timestamp),
+        fullDateTime: formatDate(item.timestamp, { format: 'MM.DD HH:mm' }),
         amount: Number(item.amount),
         income: Number(item.amount) > 0 ? Number(item.amount) : null,
         expense: Number(item.amount) < 0 ? Math.abs(Number(item.amount)) : null,
@@ -80,12 +70,12 @@ const Chart = ({ data, period }: ChartProps) => {
         <AreaChart data={formattedData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
           <defs>
             <linearGradient id="incomeGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="10%" stopColor={theme.colors.primary} stopOpacity={0.3} />
-              <stop offset="50%" stopColor={theme.colors.primary} stopOpacity={0} />
+              <stop offset="10%" stopColor={theme.colors.primary} stopOpacity={0.2} />
+              <stop offset="100%" stopColor={theme.colors.primary} stopOpacity={0} />
             </linearGradient>
             <linearGradient id="expenseGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="10%" stopColor={theme.colors.secondary} stopOpacity={0.3} />
-              <stop offset="50%" stopColor={theme.colors.secondary} stopOpacity={0} />
+              <stop offset="15%" stopColor={theme.colors.secondary} stopOpacity={0.2} />
+              <stop offset="100%" stopColor={theme.colors.secondary} stopOpacity={0} />
             </linearGradient>
           </defs>
           <XAxis
