@@ -41,15 +41,41 @@ const Activity = () => {
       </Tabs>
       <S.RecentTransactions>
         <S.SubTitle>Recent Transactions</S.SubTitle>
-        <List>
-          {sortedData
-            .filter((item) => new Date(item.timestamp) <= new Date())
-            .reverse()
-            .slice(0, 20)
-            .map((item, index) => (
-              <List.Item key={index} {...item} />
-            ))}
-        </List>
+        <Tabs defaultTab="all" variant="transparent">
+          <Tabs.Item label="All" value="all">
+            <List>
+              {sortedData
+                .filter((item) => new Date(item.timestamp) <= new Date())
+                .reverse()
+                .slice(0, 20)
+                .map((item, index) => (
+                  <List.Item key={index} {...item} />
+                ))}
+            </List>
+          </Tabs.Item>
+          <Tabs.Item label="Expense" value="expense">
+            <List>
+              {sortedData
+                .filter((item) => new Date(item.timestamp) <= new Date())
+                .reverse()
+                .slice(0, 20)
+                .map((item, index) => (
+                  <List.Item key={index} {...item} />
+                ))}
+            </List>
+          </Tabs.Item>
+          <Tabs.Item label="Income" value="income">
+            <List>
+              {sortedData
+                .filter((item) => new Date(item.timestamp) <= new Date())
+                .reverse()
+                .slice(0, 20)
+                .map((item, index) => (
+                  <List.Item key={index} {...item} />
+                ))}
+            </List>
+          </Tabs.Item>
+        </Tabs>
       </S.RecentTransactions>
     </S.Container>
   );

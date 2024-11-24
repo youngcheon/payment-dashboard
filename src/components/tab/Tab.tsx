@@ -10,6 +10,7 @@ const TabsContext = createContext<TabsContextType | undefined>(undefined);
 
 interface TabsProps {
   defaultTab?: string;
+  variant?: 'default' | 'transparent';
   children: ReactNode;
 }
 
@@ -19,19 +20,20 @@ interface TabItemProps {
   children: ReactNode;
 }
 
-export const Tabs = ({ defaultTab, children }: TabsProps) => {
+export const Tabs = ({ defaultTab, variant = 'default', children }: TabsProps) => {
   const firstTabValue = React.Children.toArray(children)[0] as React.ReactElement;
   const [activeTab, setActiveTab] = useState(defaultTab || firstTabValue.props.value);
 
   return (
     <TabsContext.Provider value={{ activeTab, setActiveTab }}>
-      <S.TabContainer>
+      <S.TabContainer variant={variant}>
         {React.Children.map(children, (child) => {
           const item = child as React.ReactElement<TabItemProps>;
           return (
             <S.TabButton
               key={item.props.value}
               isActive={activeTab === item.props.value}
+              variant={variant}
               onClick={() => setActiveTab(item.props.value)}
             >
               {item.props.label}

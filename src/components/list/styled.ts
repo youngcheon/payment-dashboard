@@ -18,7 +18,7 @@ export const ListItemContainer = styled.div`
   align-items: center;
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: 8px;
-  padding: 12px;
+  padding-block: 12px;
   gap: 12px;
 `;
 
