@@ -51,7 +51,6 @@ export const Tabs = ({ defaultTab, variant = 'default', children }: TabsProps) =
   );
 };
 
-// Tabs.Item 컴포넌트 추가
 Tabs.Item = ({ children }: TabItemProps) => {
   return <>{children}</>;
 };

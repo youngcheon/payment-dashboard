@@ -2,7 +2,6 @@ import { ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 import * as S from './styled';
 
-// 메뉴 아이템의 타입 정의
 interface MenuItem {
   path: string;
   icon: ReactNode;

@@ -14,12 +14,12 @@ const Activity = () => {
     enabled: true,
   });
 
-  const renderTransactionList = (filter: (item: Data) => boolean) => (
+  const renderTransactionList = (length: number, filter: (item: Data) => boolean) => (
     <List isLoading={isLoading}>
       {data
         .filter((item) => new Date(item.timestamp) <= new Date() && filter(item))
         .reverse()
-        .slice(0, 20)
+        .slice(0, length)
         .map((item) => (
           <List.Item key={`${item.name}-${item.timestamp}`} {...item} />
         ))}
@@ -60,13 +60,13 @@ const Activity = () => {
         <S.SubTitle>Recent Transactions</S.SubTitle>
         <Tabs defaultTab="all" variant="transparent">
           <Tabs.Item label="All" value="all">
-            {renderTransactionList(() => true)}
+            {renderTransactionList(20, () => true)}
           </Tabs.Item>
           <Tabs.Item label="Expense" value="expense">
-            {renderTransactionList((item) => item.amount < 0)}
+            {renderTransactionList(10, (item) => item.amount < 0)}
           </Tabs.Item>
           <Tabs.Item label="Income" value="income">
-            {renderTransactionList((item) => item.amount > 0)}
+            {renderTransactionList(10, (item) => item.amount > 0)}
           </Tabs.Item>
         </Tabs>
       </S.RecentTransactions>
