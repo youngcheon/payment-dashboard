@@ -1,25 +1,22 @@
 import { Tabs } from '@/components/tab';
 import * as S from './styled';
 import NotificationIcon from '@/assets/icons/notification.svg?react';
-import mockData from '@/mocks/data.json';
-import Chart from '@/components/chart';
 import { Data } from '@/types';
 import List from '@/components/list';
-import { useTransactionNotification } from '@/hooks';
+import { useTransactionData, useTransactionNotification } from '@/hooks';
+import Chart from '@/components/chart';
 
 const Activity = () => {
-  const sortedData = (mockData as Data[]).sort(
-    (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
-  );
+  const { data, isLoading } = useTransactionData();
 
   useTransactionNotification({
-    data: sortedData,
+    data,
     enabled: true,
   });
 
   const renderTransactionList = (filter: (item: Data) => boolean) => (
-    <List>
-      {sortedData
+    <List isLoading={isLoading}>
+      {data
         .filter((item) => new Date(item.timestamp) <= new Date() && filter(item))
         .reverse()
         .slice(0, 20)
@@ -40,7 +37,8 @@ const Activity = () => {
       <Tabs defaultTab="weekly" variant="default">
         <Tabs.Item label="Week" value="weekly">
           <Chart
-            data={sortedData}
+            data={data}
+            isLoading={isLoading}
             period={{
               startDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
               endDate: new Date(),
@@ -49,7 +47,8 @@ const Activity = () => {
         </Tabs.Item>
         <Tabs.Item label="Month" value="monthly">
           <Chart
-            data={sortedData}
+            data={data}
+            isLoading={isLoading}
             period={{
               startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
               endDate: new Date(),

@@ -16,7 +16,7 @@ export const useTransactionNotification = ({
   enabled = true,
 }: UseTransactionNotificationProps) => {
   const theme = useTheme();
-  const { showNotification } = useNotification();
+  const { showNotification, resetNotification } = useNotification();
   const [lastNotifiedId, setLastNotifiedId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -76,6 +76,11 @@ export const useTransactionNotification = ({
       }
     }, interval);
 
-    return () => clearInterval(checkTimeInterval);
+    return () => {
+      clearInterval(checkTimeInterval);
+      resetNotification();
+    };
   }, [data, interval, enabled, lastNotifiedId, showNotification]);
+
+  return { resetNotification };
 };

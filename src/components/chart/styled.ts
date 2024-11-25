@@ -61,3 +61,23 @@ export const TooltipDate = styled.p`
   font-size: 0.8em;
   margin-top: 4px;
 `;
+
+export const SkeletonBox = styled.div`
+  width: 100%;
+  height: 161px;
+  background-color: ${({ theme }) => theme.colors.lightGray};
+  border-radius: 8px;
+  animation: pulse 1.5s ease-in-out infinite;
+
+  @keyframes pulse {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.4;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+`;

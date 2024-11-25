@@ -72,3 +72,46 @@ export const Date = styled.span`
   font-size: ${({ theme }) => theme.fontSize.sm};
   color: ${({ theme }) => theme.colors.darkGray};
 `;
+
+export const SkeletonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: ${({ theme }) => theme.colors.white};
+  border-radius: 8px;
+  padding-block: 12px;
+  gap: 12px;
+  animation: pulse 1.5s ease-in-out infinite;
+
+  @keyframes pulse {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.4;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+`;
+
+export const SkeletonAvatar = styled.div`
+  width: 51px;
+  height: 51px;
+  border-radius: 8px;
+  background-color: ${({ theme }) => theme.colors.lightGray};
+`;
+
+export const SkeletonContent = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const SkeletonText = styled.div<{ width?: string }>`
+  height: 16px;
+  width: ${({ width }) => width || '100%'};
+  background-color: ${({ theme }) => theme.colors.lightGray};
+  border-radius: 4px;
+`;

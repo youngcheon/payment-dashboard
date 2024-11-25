@@ -9,11 +9,34 @@ interface ListItemProps extends Data {
 
 interface ListProps {
   children: ReactNode;
+  isLoading?: boolean;
 }
 
-const List = ({ children }: ListProps) => {
-  return <S.ListContainer>{children}</S.ListContainer>;
+const List = ({ children, isLoading }: ListProps) => {
+  return (
+    <S.ListContainer>
+      {isLoading
+        ? Array.from({ length: 5 }).map((_, index) => <ListSkeletonItem key={index} />)
+        : children}
+    </S.ListContainer>
+  );
 };
+
+const ListSkeletonItem = () => (
+  <S.SkeletonContainer>
+    <S.SkeletonAvatar />
+    <S.SkeletonContent>
+      <S.MainContent>
+        <S.SkeletonText width="120px" />
+        <S.SkeletonText width="80px" />
+      </S.MainContent>
+      <S.SubContent>
+        <S.SkeletonText width="80px" />
+        <S.SkeletonText width="60px" />
+      </S.SubContent>
+    </S.SkeletonContent>
+  </S.SkeletonContainer>
+);
 
 const ListItem = ({ avatar, name, amount, timestamp, type }: ListItemProps) => {
   const isPositive = amount > 0;

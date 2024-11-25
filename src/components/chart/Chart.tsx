@@ -10,6 +10,7 @@ interface ChartProps {
     startDate: Date;
     endDate: Date;
   };
+  isLoading?: boolean;
 }
 
 const compressData = (data: Data[], maxPoints: number = 50) => {
@@ -34,7 +35,7 @@ const compressData = (data: Data[], maxPoints: number = 50) => {
   return compressed;
 };
 
-const Chart = ({ data, period }: ChartProps) => {
+const Chart = ({ data, period, isLoading }: ChartProps) => {
   const theme = useTheme();
 
   const formattedData = compressData(
@@ -53,6 +54,8 @@ const Chart = ({ data, period }: ChartProps) => {
         expense: Number(item.amount) < 0 ? Math.abs(Number(item.amount)) : null,
       })),
   );
+
+  if (isLoading) return <S.SkeletonBox />;
 
   return (
     <S.ChartContainer>
