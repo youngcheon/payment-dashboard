@@ -120,7 +120,7 @@ const Chart = ({ data, period, isLoading }: ChartProps) => {
             connectNulls
             strokeWidth={2}
             activeDot={{ r: 6, strokeWidth: 1 }}
-            animationDuration={1000}
+            animationDuration={3000}
             isAnimationActive={true}
             dot={false}
           />
@@ -133,7 +133,7 @@ const Chart = ({ data, period, isLoading }: ChartProps) => {
             connectNulls
             strokeWidth={2}
             activeDot={{ r: 6, strokeWidth: 1 }}
-            animationDuration={1000}
+            animationDuration={3000}
             isAnimationActive={true}
             dot={false}
           />
